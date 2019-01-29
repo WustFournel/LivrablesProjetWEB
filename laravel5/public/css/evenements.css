@@ -1,0 +1,38 @@
+#top {
+display: flex;
+flex-direction: row;
+justify-content: center;
+}
+
+.btn {
+margin-right: 10px;
+background-color:#000000;
+border-color:#000000;
+}
+
+.btn:hover { 
+  background-color: rgb(255,194,82);
+}
+
+.img {
+  height: 150px;
+  width: 200px;
+}
+.close {
+  background-image: url("Close-icon.png");
+  background-repeat: no-repeat;
+  bottom: 418px;
+  display: none;
+  height: 32px;
+  left: 462px;
+  margin-top: -32px;
+  position: relative;
+  width: 32px;
+}
+.expand {
+  bottom: 125px;
+  margin-left: -32px;
+  margin-right: 16px;
+  pointer-events: none;
+  position: relative;
+}
