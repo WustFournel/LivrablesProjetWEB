@@ -1,15 +1,14 @@
 // Intialisation of constants and variables
 
-var express = require('express');
-var ejs = require('ejs');
-var paypal = require('paypal-rest-sdk');
-var app =express();
-var mysql = require('mysql');
+const express = require('express');
+const ejs = require('ejs');
+const paypal = require('paypal-rest-sdk');
+const app =express();
+const mysql = require('mysql');
 
 var myParser = require("body-parser");
 var product = "";
-var id;
-var str;
+var id=5;
 
 // Database connexion
 
@@ -36,15 +35,10 @@ app.use(myParser.urlencoded({extended : true}));
 
 app.use(express.static(__dirname + '/public'));
 
-//Prototype
+//SQL request
 
-function escapeRegExp(str) {
-    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-}
 
-function replaceAll(str, find, replace) {
-    return str.replace(new RegExp(find, 'g'), replace);
-}
+
 //Panier route
 
 app.get("/trans", (req, res) => {
@@ -64,32 +58,11 @@ app.get("/panier", (req, res) => {
 	res.render("panier", { product });
 });
 
-
+// app.post("/panier", (req, res) => {
+// 	res.render("panier", { product });
+// });
 
 app.post('/pay', (req, res) => {
-
-	var cart;
-	var cart_price;
-	var sCart;
-
-	for (var i = 0, len = product.length; i < len; i++) {
-	  	cart += "{\"name\": \"";
-        cart += product[i].nom;
-        cart += "\",\"sku\": \"001\",\"price\": ";   
-        cart += product[i].prix;
-        cart += ",\"currency\": \"EUR\",\"quantity\": 1},";    
-	}
-
-	for (var i = 0, len = product.length; i < len; i++) {
-	  	cart_price += product[i].prix;   
-	}
-
-	cart = cart.slice(0,-1)
-	cart = cart.substr(9)
-
-	console.log(cart);
-	console.log(cart_price);
-	console.log(product[0].prix);
 
 	const create_payment_json = {
 	    "intent": "sale",
@@ -102,17 +75,33 @@ app.post('/pay', (req, res) => {
 	    },
 	    "transactions": [{
 	        "item_list": {
-	            "items": [{
-					"name": product[0].nom,
-					"sku": "001",
-					"price": product[0].prix,
-					"currency": "EUR",
-					"quantity": 1
-				}]
+	            "items": [
+	            {
+	                "name": product[0].nom,
+	                "sku": "001",
+	                "price": product[0].prix,
+	                "currency": "EUR",
+	                "quantity": 1
+	            },
+	            {
+	                "name": product[1].nom,
+	                "sku": "001",
+	                "price": product[1].prix,
+	                "currency": "EUR",
+	                "quantity": 1
+	            },
+	            {
+	                "name": product[2].nom,
+	                "sku": "001",
+	                "price": product[2].prix,
+	                "currency": "EUR",
+	                "quantity": 1
+	            }
+	            ]
 	        },
 	        "amount": {
 	            "currency": "EUR",
-	            "total": product[0].prix
+	            "total": product[0].prix + product[1].prix + product[2].prix
 	        },
 	        "description": "A fools book"
 		}]
